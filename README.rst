@@ -1,7 +1,7 @@
 Experimental image mining using OpenCV
 ======================================
 
-Attempting to build tools to mine interesting data from large collections of scanned images
+Attempting to build tools to mine interesting data from large collections of scanned images.
 
 Current
 -------
