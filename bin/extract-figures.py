@@ -17,12 +17,12 @@ def display_images(extractor, files):
 
     images = []
     for f in files:
-        print "Loading %s" % f
+        print("Loading %s" % f)
 
         try:
             images.append(open_image(f))
-        except StandardError as exc:
-            print >>sys.stderr, exc
+        except Exception as e:
+            sys.stderr.write(str(e))
             continue
 
     def update_display(*args):
@@ -44,8 +44,8 @@ def display_images(extractor, files):
             cv2.putText(labels_img, label, (0, i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (192, 192, 192))
         cv2.imshow("Controls", labels_img)
 
-        print "Settings:\n\t", "\n\t".join(labels)
-        print
+        print("Settings:\n\t", "\n\t".join(labels))
+        print()
 
         for name, image in images:
             filtered_image = extractor.filter_image(image)
@@ -55,10 +55,10 @@ def display_images(extractor, files):
             # so we can display the effects of the filters with full-color overlays for detected figures:
             output = cv2.cvtColor(filtered_image, cv2.COLOR_GRAY2RGB)
 
-            print "Processing %s" % name
+            print("Processing %s" % name)
 
             for bbox in extractor.get_bounding_boxes_from_contours(contours, filtered_image):
-                print "\tExtract: %s" % bbox
+                print("\tExtract: %s" % bbox)
                 output[bbox.image_slice] = image[bbox.image_slice]
 
                 cv2.polylines(output, bbox.poly, True, (32, 192, 32), thickness=3)
@@ -116,7 +116,7 @@ if __name__ == "__main__":
         if not os.path.isdir(output_dir):
             parser.error("Output directory %s does not exist" % args.output_directory)
         else:
-            print "Output will be saved to %s" % output_dir
+            print("Output will be saved to %s" % output_dir)
 
     if output_dir is None and not args.interactive:
         parser.error("Either use --interactive or specify an output directory to save results!")
@@ -140,20 +140,20 @@ if __name__ == "__main__":
             for f in args.files:
                 try:
                     base_name, source_image = open_image(f)
-                except StandardError as exc:
-                    print >>sys.stderr, exc
+                except Exception as e:
+                    sys.stderr.write(str(e))
                     continue
 
                 output_base = os.path.join(output_dir, base_name)
 
-                print "Processing %s" % f
+                print("Processing %s" % f)
 
                 boxes = []
 
                 for i, bbox in enumerate(extractor.find_figures(source_image), 1):
                     extracted = source_image[bbox.image_slice]
                     extract_filename = os.path.join(output_dir, "%s-%d.jpg" % (output_base, i))
-                    print "\tSaving %s" % extract_filename
+                    print("\tSaving %s" % extract_filename)
                     cv2.imwrite(extract_filename, extracted)
 
                     boxes.append(bbox.as_dict())
@@ -167,10 +167,10 @@ if __name__ == "__main__":
                     json_filename = os.path.join(output_dir, "%s.json" % output_base)
                     with open(json_filename, "wb") as json_f:
                         json.dump(json_data, json_f, allow_nan=False)
-                    print "\tSaved extract information to %s" % json_filename
+                    print("\tSaved extract information to %s" % json_filename)
 
-    except Exception as exc:
+    except Exception as e:
         if args.debug:
-            print >>sys.stderr, exc
+            sys.stderr.write(str(e))
             pdb.pm()
         raise

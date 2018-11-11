@@ -171,7 +171,7 @@ class FigureExtractor(object):
                 other_boxes = [j for j in boxes if j is not i]
                 for j in other_boxes:
                     if j.overlaps(i):
-                        print "\tMerging overlapping extracts: %s %s" % (i, j)
+                        print("\tMerging overlapping extracts: %s %s" % (i, j))
                         i.merge(j)
                         boxes.remove(j)
                         restart = True

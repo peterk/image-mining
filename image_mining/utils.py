@@ -1,8 +1,7 @@
 # encoding: utf-8
-from __future__ import absolute_import, unicode_literals, print_function
 
-from urllib import urlopen
-from urlparse import urlparse
+from urllib.request import urlopen
+from urllib.parse import urlparse
 import os
 
 import cv2

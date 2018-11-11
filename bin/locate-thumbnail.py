@@ -6,16 +6,12 @@ Detect the crop box for a thumbnail inside a larger image
 The thumbnail image can be cropped and scaled arbitrarily from the larger image. Rotation and other more
 complex transformations should work but may lower accuracy.
 """
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 import argparse
 import json
 import logging
 import os
 import sys
 
-import cv
 import cv2
 import numpy
 from image_mining.utils import open_image
@@ -388,7 +384,7 @@ def locate_thumbnail(thumbnail_filename, source_filename, display=False, save_vi
 
     if display:
         # This may or may not exist depending on whether OpenCV was compiled using the QT backend:
-        window_flags = getattr(cv, 'CV_WINDOW_NORMAL', cv.CV_WINDOW_AUTOSIZE)
+        window_flags = getattr(cv2, "WINDOW_NORMAL", cv2.WINDOW_AUTOSIZE)
         window_title = '%s - %s' % (thumbnail_basename, title)
         cv2.namedWindow(window_title, flags=window_flags)
         cv2.imshow(window_title, vis_image)
@@ -433,7 +429,7 @@ def main():
     if args.debug:
         import pdb
 
-    for i in xrange(0, len(args.files), 2):
+    for i in range(0, len(args.files), 2):
         thumbnail = args.files[i]
         source = args.files[i + 1]
 
