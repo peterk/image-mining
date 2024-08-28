@@ -102,10 +102,9 @@ class FigureExtractor(object):
         _, a, b = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         return a, b
 
-    if cv2.__version__.startswith('2.'):
-        find_contours = _find_contours_opencv2
-    else:
-        find_contours = _find_contours_opencv3
+    def find_contours(self, image):
+        contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        return contours, hierarchy
 
     def filter_image(self, source_image):
         # TODO: Refactor this into a more reusable filter chain
